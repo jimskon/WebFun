@@ -7,6 +7,7 @@ $(document).ready(function () {
     $('#random-btn').click(randomWord);
     $("#inputText").keyup(showstuff);
 
+
     $(".dropdown-menu a").click(function(){
 	console.log("pick!"+$(this).text());
 	$(this).parents(".dropdown").find(".selection").text($(this).text());
@@ -82,15 +83,24 @@ function findMatches() {
   out="";
   j=start;
   while (j<start+10) {
-    out+=words[j]+"<br/>";
+    out+="<div class='words' data='"+j+"'>"+words[j]+"</div>";
 
     j++;
   }
+  console.log(out);
   $('#wordmatches').html(out);
+  $(".words").click(wordbox);
 }
 
 function randomWord() {
   i=Math.floor(Math.random() * words.length);
   $("#search").val(words[i]);
   findMatches();
+}
+
+function wordbox() {
+  console.log("hello");
+  index=$(this).attr("data");
+  theWord=$(this).text();
+  alert("Index:"+index+" Word:"+theWord);
 }
