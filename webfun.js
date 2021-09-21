@@ -1,25 +1,36 @@
 
 var option="Forward"
 var words;
-$(document).ready(function () {
 
-    $('#search').keyup(findMatches);
-    $('#random-btn').click(randomWord);
-    $("#inputText").keyup(showstuff);
+document.querySelector('#search').addEventListener('keyup',findMatches);
+document.querySelector('#random-btn').addEventListener('click',randomWord);
+document.querySelector("#inputText").addEventListener('keyup',showstuff);
 
 
-    $(".dropdown-menu a").click(function(){
-	console.log("pick!"+$(this).text());
-	$(this).parents(".dropdown").find(".selection").text($(this).text());
-	option=$(this).text();
-    showstuff();
+document.querySelectorAll(".dropdown-menu a").forEach(item => {
+    item.addEventListener('click', event => {
+	var element = event.target;
+	option=element.textContent;
+	console.log("pick!"+option);
+	// Get the pulldown parent
+	pullDown = element.parentElement.parentElement;
+	// Get and set the selection displayed
+	var  selected = pullDown.querySelectorAll(".selection")[0];
+	selected.innerHTML = option;
+	
+	showstuff();
     });
+})
 
-});
+fetch('http://jimskon.com/class/softdev/skon/webfun/words.txt',{
+    method: 'get'
+})
+    .then(response => response.text())
+    .then (textString => saveWords(textString))
+    .catch(error => {
+	{alert("Error: Something went wrong:"+error);}
+    })
 
-jQuery.get('http://jimskon.com/class/softdev/skon/webfun/words.txt', function(data) {
-   saveWords(data)
-}, 'text');
 
 function saveWords(data) {
   words=data.split("\n");
@@ -48,14 +59,14 @@ function sortString(text) {
 };
 
 function showstuff() {
-  var intext = $("#inputText").val();
-  if (option=="Backward") {
-    intext=reverse(intext);
-  } else if (option=="Sort") {
-    intext=sortString(intext);
-  }
-  console.log(intext);
-  $("#outputText").val(intext);
+    var intext = document.querySelector("#inputText").value;
+    
+    if (option=="Backward") {
+	intext=reverse(intext);
+    } else if (option=="Sort") {
+	intext=sortString(intext);
+    }
+    document.querySelector("#outputText").value = intext;
 }
 
 function binarySearch(ar, el) {
@@ -93,9 +104,10 @@ function findMatches() {
 }
 
 function randomWord() {
-  i=Math.floor(Math.random() * words.length);
-  $("#search").val(words[i]);
-  findMatches();
+    i=Math.floor(Math.random() * words.length);
+    console.log("Random:",i);
+    $("#search").val(words[i]);
+    findMatches();
 }
 
 function wordbox() {
