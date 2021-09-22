@@ -1,11 +1,15 @@
 
 var option="Forward"
 var words;
+var angle = 0;
 
 // Set up the events for the serch button, and keyup events on fields
 document.querySelector('#search').addEventListener('keyup',findMatches);
 document.querySelector('#random-btn').addEventListener('click',randomWord);
 document.querySelector("#inputText").addEventListener('keyup',showString);
+document.querySelector("#rotLeft").addEventListener('click',rotateLeft);
+document.querySelector("#rotRight").addEventListener('click',rotateRight);
+document.querySelector("#spin").addEventListener('click',startSpin);
 
 // Set up the event for managing the pulldown menu
 document.querySelectorAll(".dropdown-menu a").forEach(item => {
@@ -53,7 +57,7 @@ function sortString(text) {
 };
 
 // Show the modified string entered
-function showString() {<
+function showString() {
     var intext = document.querySelector("#inputText").value;
     
     if (option=="Backward") {
@@ -121,4 +125,39 @@ function wordbox(element) {
   index=element.getAttribute("data");
   theWord=element.textContent;
   alert("Index:"+index+" Word:"+theWord);
+}
+
+// Rotate Shield
+function rotateLeft() {
+    angle -= 10;
+    var shield=document.querySelector("#shield");
+    shield.style.transform = "rotate("+angle+"deg)";
+
+}
+// Rotate Shield Left
+function rotateRight() {
+    angle += 10;
+    var shield=document.querySelector("#shield");
+    shield.style.transform = "rotate("+angle+"deg)";
+
+}
+
+// Spin the shield
+function startSpin()
+{
+    shield.style.transform = "rotate(0deg)";
+    angle = 10;
+    // Get things started
+    setTimeout('changeRotate()',1);
+}
+
+// Spin 10 degrees, then set timeou for 10 ms more
+function changeRotate()
+{
+    var shield=document.querySelector("#shield"); 
+    shield.style.transform = "rotate(" + angle + "deg)";
+    angle += 10;
+    if (angle < 370) {
+	setTimeout('changeRotate()',100);
+    }
 }

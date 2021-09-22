@@ -11,6 +11,7 @@ PutHTML:
 	cp webfun.css /var/www/html/class/softdev/$(user)/webfun/
 	cp webfun.js /var/www/html/class/softdev/$(user)/webfun/
 	cp words.txt /var/www/html/class/softdev/$(user)/webfun/
+	cp KenyonShield.png /var/www/html/class/softdev/$(user)/webfun/
 	echo "Current contents of your HTML directory: "
 	ls -l /var/www/html/class/softdev/$(user)/webfun/
 clean:
