@@ -2,6 +2,7 @@
 var option="Forward"
 var words;
 var angle = 0;
+var spin = false;
 
 // Set up the events for the serch button, and keyup events on fields
 document.querySelector('#search').addEventListener('keyup',findMatches);
@@ -95,7 +96,7 @@ function findMatches() {
     start=Math.max(i-5,0);
     out="";
     j=start;
-    while (j<start+10) {
+    while (j<start+10 && j < words.length) {
 	out+="<div class='words' data='"+j+"'>"+words[j]+"</div>";
 	
 	j++;
@@ -145,19 +146,32 @@ function rotateRight() {
 // Spin the shield
 function startSpin()
 {
-    shield.style.transform = "rotate(0deg)";
-    angle = 10;
-    // Get things started
-    setTimeout('changeRotate()',1);
+    var spinButton = document.querySelector("#spin")
+    if (!spin) {
+	spin = true;
+	var shield=document.querySelector("#shield");     
+	shield.style.transform = "rotate(0deg)";
+	spinButton.innerHTML = "Stop"
+	angle = 0;
+	// Get things started
+	setTimeout('changeRotate()',1);
+    } else {
+	spinButton.innerHTML = "Spin"
+	spin = false;
+	angle = 0;
+    }
 }
 
-// Spin 10 degrees, then set timeou for 10 ms more
+// Spin 10 degrees, then set timeout for 10 ms more
 function changeRotate()
 {
     var shield=document.querySelector("#shield"); 
-    shield.style.transform = "rotate(" + angle + "deg)";
-    angle += 10;
-    if (angle < 370) {
+    if (spin) {
+	shield.style.transform = "rotate(" + angle + "deg)";
+	angle += 10;
+	if (angle >= 360) angle = 0;
 	setTimeout('changeRotate()',100);
+    } else {
+	shield.style.transform = "rotate(0deg)";
     }
 }
